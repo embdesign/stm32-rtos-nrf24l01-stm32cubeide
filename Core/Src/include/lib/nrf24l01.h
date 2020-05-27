@@ -391,4 +391,13 @@ extern void nrf24l01_port_pin_csn_set(void);
 extern bool nrf24l01_port_pin_csn_active(void);
 extern bool nrf24l01_port_pin_irq_active(void);
 
+//Port timings
+// Genuine NORDIC SEMICONDUCTORS chips 100ms
+#define NRF24L01_PORT_DELAY_POWER_ON_RESET_US	(100000u)
+// Genuine NORDIC SEMICONDUCTORS chips 4500us
+#define NRF24L01_PORT_DELAY_Tpd2stby_US			(4500u)
+// Genuine NORDIC SEMICONDUCTORS chips 10us
+// 10us and 20us delays did not worked with green pcb board (IRQ pulse was missing)
+#define NRF24L01_PORT_DELAY_Thce_US				(35u)
+
 #endif /*NRF24L01_H_*/

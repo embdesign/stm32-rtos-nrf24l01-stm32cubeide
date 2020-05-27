@@ -130,11 +130,11 @@ void frtos_task_rf(void *arg)
 {
 	uint8_t data = 0x55;
 
-	// Power on reset delay >100ms
-	//frtos_delay_ms(100);
+	// Power on delay
+	nrf24l01_port_delay_us(NRF24L01_PORT_DELAY_POWER_ON_RESET_US);
 
 	// Set into default state
-	//nrf24l01_power_down();
+	nrf24l01_power_down();
 
 	// Set as transmitter
 	nrf24l01_initialize_debug(false, 1, false);

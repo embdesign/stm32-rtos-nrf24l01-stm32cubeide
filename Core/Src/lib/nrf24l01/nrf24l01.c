@@ -231,7 +231,7 @@ void nrf24l01_power_up(bool rx_active_mode)
 
 	nrf24l01_write_register(nrf24l01_CONFIG, &config, 1);
 
-	nrf24l01_port_delay_us(1500u);
+	nrf24l01_port_delay_us(NRF24L01_PORT_DELAY_Tpd2stby_US);
 
 	if((config & nrf24l01_CONFIG_PRIM_RX) == 0)
 		nrf24l01_port_pin_ce_clear();
@@ -258,7 +258,7 @@ void nrf24l01_power_up_param(bool rx_active_mode, unsigned char config)
 
 	nrf24l01_write_register(nrf24l01_CONFIG, &config, 1);
 
-	nrf24l01_port_delay_us(1500u);
+	nrf24l01_port_delay_us(NRF24L01_PORT_DELAY_Tpd2stby_US);
 
 	if((config & nrf24l01_CONFIG_PRIM_RX) == 0)
 		nrf24l01_port_pin_ce_clear();
@@ -495,7 +495,7 @@ unsigned char nrf24l01_nop()
 void nrf24l01_transmit()
 {
 	nrf24l01_port_pin_ce_set();
-	nrf24l01_port_delay_us(30u);
+	nrf24l01_port_delay_us(NRF24L01_PORT_DELAY_Thce_US);
 	nrf24l01_port_pin_ce_clear();
 }
 
