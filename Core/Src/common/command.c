@@ -32,7 +32,7 @@ int cmd_exec(int argc, const char * const argv[])
 	struct cmd_tbl *cmd;
 	struct cmd_tbl *list_start = (struct cmd_tbl *)WARN_ASSUME_ALIGNED __cmd_tbl_list_start;
 	struct cmd_tbl *list_end   = (struct cmd_tbl *)WARN_ASSUME_ALIGNED __cmd_tbl_list_end;
-	int              ret         = -ENOENT;
+	int            ret         = -ENOENT;
 
 	MASSERT_ARG(argv != 0);
 
@@ -47,6 +47,25 @@ int cmd_exec(int argc, const char * const argv[])
 
 			list_start++;
 		}
+	}
+
+	return ret;
+}
+
+int cmd_get_info(unsigned int cmd_id, const char **name, const char **help)
+{
+	struct cmd_tbl *cmd;
+	struct cmd_tbl *list_start = (struct cmd_tbl *)WARN_ASSUME_ALIGNED __cmd_tbl_list_start;
+	struct cmd_tbl *list_end   = (struct cmd_tbl *)WARN_ASSUME_ALIGNED __cmd_tbl_list_end;
+	int            ret         = -ENOENT;
+
+	if (cmd_id < (unsigned int)(list_end - list_start)) {
+		cmd = &list_start[cmd_id];
+
+		*name = cmd->name;
+		*help = cmd->help;
+
+		ret = 0;
 	}
 
 	return ret;

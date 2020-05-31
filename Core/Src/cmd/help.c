@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
- *  <cmd/version.h>
+ *  <cmd/help.h>
  *
  *  Copyright (C) 2020-2021 Marek Sujak
  *
@@ -11,7 +11,7 @@
 #include <command.h>
 #include <console.h>
 
-int do_version(cmd_tbl_t *cmdtp, int flag, int argc, const char * const argv[])
+int do_help(cmd_tbl_t *cmdtp, int flag, int argc, const char * const argv[])
 {
 	//WARN_UNUSED(cmdtp);
 	WARN_UNUSED(flag);
@@ -34,16 +34,29 @@ int do_version(cmd_tbl_t *cmdtp, int flag, int argc, const char * const argv[])
 		return 0;
 	}
 
+	{
+		const char   *name;
+		const char   *help;
+		unsigned int i = 0;
 
-	console_puts(CONFIG_DATA_VERSION_STRING CONFIG_CONSOLE_LINE_ENDING_STRING);
+		while (cmd_get_info(i, &name, &help) == 0) {
+			console_puts("\t");
+			console_puts(name);
+			console_puts(" - ");
+			console_puts(help);
+			console_puts(CONFIG_CONSOLE_LINE_ENDING_STRING);
+
+			i++;
+		}
+	}
 
 	return 0;
 }
 
-CMD_DEFINE(version) = {
-	.name     = "version",
+CMD_DEFINE(help) = {
+	.name     = "help",
 	.args_min = 1,
 	.args_max = 1,
-	.cmd      = do_version,
-	.help     = "print version info",
+	.cmd      = do_help,
+	.help     = "print build-in commands list",
 };

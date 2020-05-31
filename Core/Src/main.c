@@ -93,6 +93,8 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
+  extern void rtos_init(void);
+  rtos_init();
 
   /* USER CODE END SysInit */
 
@@ -318,7 +320,7 @@ static void MX_GPIO_Init(void)
   LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOA);
 
   /**/
-  LL_GPIO_ResetOutputPin(LED_GPIO_Port, LED_Pin);
+  LL_GPIO_ResetOutputPin(GPIOC, LED_Pin|LL_GPIO_PIN_14|LL_GPIO_PIN_15);
 
   /**/
   LL_GPIO_ResetOutputPin(NRF24L01_CE_GPIO_Port, NRF24L01_CE_Pin);
@@ -327,11 +329,11 @@ static void MX_GPIO_Init(void)
   LL_GPIO_SetOutputPin(NRF24L01_CSN_GPIO_Port, NRF24L01_CSN_Pin);
 
   /**/
-  GPIO_InitStruct.Pin = LED_Pin;
+  GPIO_InitStruct.Pin = LED_Pin|LL_GPIO_PIN_14|LL_GPIO_PIN_15;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-  LL_GPIO_Init(LED_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /**/
   GPIO_InitStruct.Pin = NRF24L01_CSN_Pin;

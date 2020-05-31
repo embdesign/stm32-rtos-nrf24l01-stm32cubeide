@@ -236,6 +236,15 @@ void TIM1_UP_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
+extern TIM_HandleTypeDef htim4;
+volatile unsigned long ulHighFrequencyTimerTicks = 0;
 
+void TIM4_IRQHandler(void)
+{
+	HAL_TIM_IRQHandler(&htim4);
+
+    /* Increment the counter used to measure execution time */
+    ulHighFrequencyTimerTicks++;
+}
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

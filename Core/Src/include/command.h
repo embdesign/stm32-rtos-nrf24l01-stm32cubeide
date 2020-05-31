@@ -37,7 +37,8 @@ typedef struct cmd_tbl {
 
 /* common/command.c */
 int cmd_is_argc_invalid(cmd_tbl_t *cmdtp, int argc, const char * const argv[]);
-int cmd_exec(int argc, const char * const argv[]);
+int cmd_exec           (int argc, const char * const argv[]);
+int cmd_get_info       (unsigned int cmd_id, const char **name, const char **help);
 
 #ifdef __cplusplus
 }
