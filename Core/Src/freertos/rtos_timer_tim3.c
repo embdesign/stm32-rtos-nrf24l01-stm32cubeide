@@ -172,19 +172,31 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
 		must have brought the system out of sleep mode). */
 		if( ( TIM3->SR & TIM_SR_CC1IF ) != 0 )
 		{
+			uint32_t ulCalculatedLoadValue;
+
 			/* Clear TIM3 count reached to zero flag */
 			TIM3->SR &= ~(TIM_SR_CC1IF);
-
-			/* As the pending tick will be processed as soon as this
-			function exits, the tick value maintained by the tick is stepped
-			forward by one less than the time spent waiting. */
-			ulCompleteTickPeriods = xExpectedIdleTime - 1UL;
 
 			/* The TIM3 interrupt is already pending, and the TIM3 count
 			reloaded with ulReloadValue.  Reset the
 			TIM3->ARR with whatever remains of this tick
 			period. */
-			TIM3->ARR = ulTimerCountsForOneTick - 1;
+			ulCalculatedLoadValue = ( ulTimerCountsForOneTick - 1UL ) - ( ulReloadValue - TIM3->CNT );
+
+			/* Don't allow a tiny value, or values that have somehow
+			underflowed because the post sleep hook did something
+			that took too long. */
+			if( ( ulCalculatedLoadValue < 1 ) || ( ulCalculatedLoadValue > ulTimerCountsForOneTick ) )
+			{
+				ulCalculatedLoadValue = ( ulTimerCountsForOneTick - 1UL );
+			}
+
+			TIM3->ARR = ulCalculatedLoadValue;
+
+			/* As the pending tick will be processed as soon as this
+			function exits, the tick value maintained by the tick is stepped
+			forward by one less than the time spent waiting. */
+			ulCompleteTickPeriods = xExpectedIdleTime - 1UL;
 		}
 		else
 		{
